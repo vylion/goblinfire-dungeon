@@ -56,6 +56,7 @@
      <Compile Include="Assets\Scripts\IntRangeRand.cs" />
      <Compile Include="Assets\Scripts\Room.cs" />
      <Compile Include="Assets\Scripts\RoomTree.cs" />
+     <Compile Include="Assets\Scripts\TilemapManager.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

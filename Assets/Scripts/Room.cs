@@ -5,67 +5,65 @@ using UnityEngine;
 [System.Serializable]
 public class Room {
 
-	public Coord topLeft, botRight;
+	public Coord botLeft, topRight;
 
 	private List<Coord> doors;
 
-	public Room(Coord tl, Coord br) {
-		topLeft = tl;
-		botRight = br;
+	public Room(Coord bl, Coord tr) {
+		botLeft = bl;
+		topRight = tr;
 
 		doors = new List<Coord> ();
 	}
 
 	public Room() : this(new Coord(0,0), new Coord(0,0)) {}
 
-	public Coord getTopLeft() {
-		return topLeft;
+	public Coord getBotLeft() {
+		return botLeft;
 	}
 
-	public Coord getBotRight() {
-		return botRight;
+	public Coord getTopRight() {
+		return topRight;
 	}
 
 	public int getLeft() {
-		return topLeft.x;
+		return botLeft.x;
 	}
 
 	public int getRight() {
-		return botRight.x;
+		return topRight.x;
 	}
 
 	public int getWidth() {
-		return botRight.x - topLeft.x;
+		return topRight.x - botLeft.x;
 	}
 
 	public int getTop() {
-		return topLeft.y;
+		return topRight.y;
 	}
 
 	public int getBot() {
-		return botRight.y;
+		return botLeft.y;
 	}
 
 	public int getHeight() {
-		return botRight.y - topLeft.y;
+		return topRight.y - botLeft.y;
 	}
 
-	public Coord getSize() {
-		return new Coord (Mathf.Abs(topLeft.x - botRight.x), Mathf.Abs(topLeft.y - botRight.y));
+	public Coord getDimensions() {
+		return new Coord (topRight.x - botLeft.x, topRight.y - botLeft.y);
 	}
 
 	public int getArea() {
-		Coord size = new Coord (Mathf.Abs(topLeft.x - botRight.x), Mathf.Abs(topLeft.y - botRight.y));
-
-		return size.x * size.y;
+		return (topRight.x - botLeft.x) * (topRight.y - botLeft.y);
 	}
 
-	public string DimensionString() {
-		return "[ " + topLeft.ToString () + "; " + botRight.ToString () + " ]";
+	public string stringCoordinates() {
+		return "[ " + botLeft.ToString () + "; " + topRight.ToString () + " ]";
 	}
 
 	public bool contains(Coord p) {
-		return !(p.x < topLeft.x || p.x > botRight.x ||
-				 p.y < topLeft.y || p.y > botRight.y);
+		return !(p.x < botLeft.x || p.x > topRight.x ||
+				 p.y < botLeft.y || p.y > topRight.y);
 	}
 }

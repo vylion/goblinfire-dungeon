@@ -72,42 +72,42 @@ public class RoomTree {
 		return false;
 	}
 
-	public Coord getTopLeft() {
-		return node.getTopLeft ();
+	public Coord getMinCoord() {
+		return minCoord;
 	}
 
-	public Coord getBotRight() {
-		return node.getBotRight ();
+	public Coord getMaxCoord() {
+		return maxCoord;
 	}
 
 	public int getLeft() {
-		return node.getLeft ();
+		return minCoord.x;
 	}
 
 	public int getRight() {
-		return node.getRight ();
+		return maxCoord.x;
 	}
 
 	public int getTop() {
-		return node.getTop ();
+		return maxCoord.y;
 	}
 
 	public int getBot() {
-		return node.getBot ();
+		return minCoord.y;
 	}
 
 	//---------------------------------------------------------------------------------------------------------------------------------
 	// Generators
 
 	public static Room generateRoom(Room area) {
-		Coord origin = area.getTopLeft ();
+		Coord origin = area.getBotLeft ();
 		int roomWidth = area.getWidth ();
 		int roomHeight = area.getHeight ();
 
 		int x = (int) Random.Range (0, Mathf.Floor (roomWidth*3 / 5));
-		int y = (int) Random.Range (0, Mathf.Floor (roomWidth*3 / 5));
+		int y = (int) Random.Range (0, Mathf.Floor (roomHeight*3 / 5));
 		int w = roomWidth - x - (int) Random.Range (0, Mathf.Floor (roomWidth*3 / 5));
-		int h = roomHeight - y - (int) Random.Range (0, Mathf.Floor (roomWidth*3 / 5));
+		int h = roomHeight - y - (int) Random.Range (0, Mathf.Floor (roomHeight*3 / 5));
 
 		Room r = new Room (origin + new Coord (x, y), origin + new Coord (x + w, y + h));
 		//Debug.Log ("Generated Room: " + r.DimensionString());
@@ -124,8 +124,8 @@ public class RoomTree {
 
 			//Horizontal
 			mid = Random.Range (r.getLeft () + 1, r.getRight () - 1);
-			r1 = new Room (new Coord (r.getLeft (), r.getTop ()), new Coord (mid, r.getBot()));
-			r2 = new Room (new Coord (mid + 1, r.getTop()), new Coord (r.getRight (), r.getBot ()));
+			r1 = new Room (r.getBotLeft(), new Coord (mid, r.getTop()));
+			r2 = new Room (new Coord (mid + 1, r.getBot()), r.getTopRight());
 
 			//Debug.Log ("Mid point " + mid.ToString () + " between [" + r.getLeft ().ToString () + ", " + r.getRight ().ToString () + "]");
 
@@ -139,9 +139,9 @@ public class RoomTree {
 			//Debug.Log ("Doing vertical split. Ratio is " + (r.getWidth () / ((float) r.getHeight () + r.getWidth())).ToString());
 
 			//Vertical
-			mid = Random.Range (r.getTop () + 1, r.getBot () - 1);
-			r1 = new Room (new Coord (r.getLeft(), r.getTop()), new Coord (r.getRight(), mid));
-			r2 = new Room (new Coord (r.getLeft(), mid + 1), new Coord (r.getRight(), r.getBot()));
+			mid = Random.Range (r.getBot () + 1, r.getTop () - 1);
+			r1 = new Room (r.getBotLeft(), new Coord (r.getRight(), mid));
+			r2 = new Room (new Coord (r.getLeft(), mid + 1), r.getTopRight());
 
 			//Debug.Log ("Mid point " + mid.ToString () + " between [" + r.getTop ().ToString () + ", " + r.getBot ().ToString () + "]");
 
@@ -162,7 +162,7 @@ public class RoomTree {
 		RoomTree root = new RoomTree (area);
 
 		if (level > 0 && area.getArea() > minArea) {
-			Debug.Log ("Iteration #" + level.ToString() + ". Area is " + area.getArea().ToString() + ". Splitting " + area.DimensionString ());
+			Debug.Log ("Iteration #" + level.ToString() + ". Area is " + area.getArea().ToString() + ". Splitting " + area.stringCoordinates ());
 			RoomSplit rs;
 
 			for(int i = 0; i < 10; i++) {
@@ -172,12 +172,24 @@ public class RoomTree {
 					root.leftChild = splitArea (rs.r1, level - 1, minArea, mw, mh);
 					root.rightChild = splitArea (rs.r2, level - 1, minArea, mw, mh);
 
+					int minx = root.leftChild.getLeft () <= root.rightChild.getLeft () ? root.leftChild.getLeft () : root.rightChild.getLeft ();
+					int maxx = root.rightChild.getRight () >= root.leftChild.getRight () ? root.rightChild.getRight () : root.leftChild.getRight ();
+					int miny = root.leftChild.getBot () <= root.rightChild.getBot () ? root.leftChild.getBot () : root.rightChild.getBot ();
+					int maxy = root.rightChild.getTop () >= root.leftChild.getTop () ? root.rightChild.getTop () : root.leftChild.getTop ();
+
+					root.minCoord = new Coord (minx, miny);
+					root.maxCoord = new Coord (maxx, maxy);
+
 					return root;
 				} else {
 					Debug.Log ("Split ratio was too small");
 				}
 			}
 		}
+
+		root.node = generateRoom (root.node);
+		root.minCoord = root.node.getBotLeft ();
+		root.maxCoord = root.node.getTopRight ();
 
 		return root;
 	}
@@ -194,17 +206,17 @@ public class RoomTree {
 
 			int minx = root.leftChild.getLeft () <= root.rightChild.getLeft () ? root.leftChild.getLeft () : root.rightChild.getLeft ();
 			int maxx = root.rightChild.getRight () >= root.leftChild.getRight () ? root.rightChild.getRight () : root.leftChild.getRight ();
-			int miny = root.leftChild.getTop() <= root.rightChild.getTop () ? root.leftChild.getTop () : root.rightChild.getTop ();
-			int maxy = root.rightChild.getBot () >= root.leftChild.getBot () ? root.rightChild.getBot () : root.leftChild.getBot ();
+			int miny = root.leftChild.getBot () <= root.rightChild.getBot () ? root.leftChild.getBot () : root.rightChild.getBot ();
+			int maxy = root.rightChild.getTop () >= root.leftChild.getTop () ? root.rightChild.getTop () : root.leftChild.getTop ();
 
-			root.minCoord = new Coord (minx, maxx);
-			root.maxCoord = new Coord (miny, maxy);
+			root.minCoord = new Coord (minx, miny);
+			root.maxCoord = new Coord (maxx, maxy);
 		}
 
 		else {
 			root.node = generateRoom (root.node);
-			root.minCoord = root.node.getTopLeft ();
-			root.maxCoord = root.node.getBotRight ();
+			root.minCoord = root.node.getBotLeft ();
+			root.maxCoord = root.node.getTopRight ();
 		}
 
 		return root;

@@ -58,6 +58,20 @@ public class TilemapManager : MonoBehaviour
 		paintBorder (tFloor, r.getBotLeft (), r.getTopRight (), 0, wall);
 	}
 
+	public void paintMap(int[,] m) {
+		for (int i = 0; i < m.GetLength (0); i++) {
+			for (int j = 0; j < m.GetLength (1); j++) {
+				if (m [i, j] == (int)BoardGenerator.FloorType.WALL) {
+					tFloor.SetTile (new Vector3Int (i, j, 0), wall);
+				} else if (m [i, j] == (int)BoardGenerator.FloorType.FLOOR_IN) {
+					tFloor.SetTile (new Vector3Int (i, j, 0), rocks);
+				} else {
+					tFloor.SetTile (new Vector3Int (i, j, 0), dirt);
+				}
+			}
+		}
+	}
+
 	void paintRect(Tilemap map, Coord minCoord, Coord maxCoord, int z, TileBase tile) {
 		int x0 = minCoord.x > maxCoord.x ? maxCoord.x : minCoord.x;
 		int y0 = minCoord.y > maxCoord.y ? maxCoord.y : minCoord.y;

@@ -41,3 +41,15 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Map
+    uniqueID: 383253633
+    locked: 0
+  - name: Items
+    uniqueID: 4288012039
+    locked: 0
+  - name: Characters
+    uniqueID: 1967602647
+    locked: 0
+  - name: HighDecor
+    uniqueID: 267966817
+    locked: 0

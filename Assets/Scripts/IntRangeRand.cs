@@ -16,7 +16,7 @@ public class IntRangeRand {
 	}
 
 	public int getRand() {
-		return Random.Range (min, max);
+		return Random.Range (min, max+1);
 	}
 
 	public int getWeighted2Min(float weight) {

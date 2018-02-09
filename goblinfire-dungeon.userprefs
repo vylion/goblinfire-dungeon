@@ -1,13 +1,17 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\BoardGenerator.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Characters\GoblinManager.cs">
     <Files>
-      <File FileName="Assets\Scripts\Room.cs" Line="12" Column="32" />
+      <File FileName="Assets\Scripts\Characters\Player\PlayerCharacter.cs" Line="15" Column="4" />
+      <File FileName="Assets\Scripts\Characters\NonPlayerCharacter.cs" Line="34" Column="17" />
+      <File FileName="Assets\Scripts\Characters\Character.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Characters\GoblinManager.cs" Line="33" Column="4" />
+      <File FileName="Assets\Scripts\Characters\Player\PlayerMovement.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Characters\Player\PlayerManager.cs" Line="80" Column="6" />
+      <File FileName="Assets\Scripts\Map\GameManager.cs" Line="45" Column="23" />
+      <File FileName="Assets\Scripts\Characters\Player\PlayerCamera.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\IntRangeRand.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Coord.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\RoomTree.cs" Line="136" Column="5" />
-      <File FileName="Assets\Scripts\BoardGenerator.cs" Line="33" Column="46" />
-      <File FileName="Assets\Scripts\TilemapManager.cs" Line="85" Column="24" />
+      <File FileName="Assets\DownloadedContent\2d-extras-master\Assets\Tilemap\Tiles\Random Tile\Scripts\RandomTile.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
